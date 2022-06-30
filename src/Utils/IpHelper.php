@@ -57,7 +57,7 @@ class IpHelper {
 	public static function isLocalhost( $ip = null ): bool {
 		$ip = empty( $ip ) ? self::userIp() : $ip;
 
-		return in_array( $ip, [ '127.0.0.1', '::1' ] );
+		return empty( $ip ) || in_array( $ip, [ '127.0.0.1', '::1' ] );
 	}
 
 	public static function isValid( $ip ): bool {

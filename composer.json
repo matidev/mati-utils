@@ -1,6 +1,6 @@
 {
   "name": "matidev/utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Bypass Sophos Login with 2FA",
   "authors": [

@@ -35,4 +35,19 @@ class CommonHelper
     {
         return !empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     }
+
+    public static function insertArrayAfterKey(&$array, $key, $insertArray): void
+    {
+        $index = array_search($key, array_keys($array));
+
+        if ($index === false) {
+            $array = array_merge($array, $insertArray);
+        } else {
+            $array = array_merge(
+                array_slice($array, 0, $index + 1, true),
+                $insertArray,
+                array_slice($array, $index + 1, null, true)
+            );
+        }
+    }
 }

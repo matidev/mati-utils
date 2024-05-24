@@ -55,32 +55,22 @@ class IpHelper
 
     public static function userIp(): string
     {
-        $ipaddress = '';
+        $ipAddress = '';
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        } else {
-            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            } else {
-                if (isset($_SERVER['HTTP_X_FORWARDED'])) {
-                    $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-                } else {
-                    if (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
-                        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-                    } else {
-                        if (isset($_SERVER['HTTP_FORWARDED'])) {
-                            $ipaddress = $_SERVER['HTTP_FORWARDED'];
-                        } else {
-                            if (isset($_SERVER['REMOTE_ADDR'])) {
-                                $ipaddress = $_SERVER['REMOTE_ADDR'];
-                            }
-                        }
-                    }
-                }
-            }
+            $ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED'];
+        } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
+            $ipAddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
+            $ipAddress = $_SERVER['HTTP_FORWARDED'];
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            $ipAddress = $_SERVER['REMOTE_ADDR'];
         }
 
-        return $ipaddress;
+        return $ipAddress;
     }
 
     public static function match($ip, $ranges): bool
@@ -107,16 +97,12 @@ class IpHelper
 
         if (strpos($range, '/') !== false) {
             $status = self::processWithSlash($ip, $range);
+        } elseif (strpos($range, '*') !== false) {
+            $status = self::processWithAsterisk($ip, $range);
+        } elseif (strpos($range, '-') !== false) {
+            $status = self::processWithMinus($ip, $range);
         } else {
-            if (strpos($range, '*') !== false) {
-                $status = self::processWithAsterisk($ip, $range);
-            } else {
-                if (strpos($range, '-') !== false) {
-                    $status = self::processWithMinus($ip, $range);
-                } else {
-                    $status = ($ip === $range);
-                }
-            }
+            $status = ($ip === $range);
         }
 
         return $status;
@@ -208,10 +194,8 @@ class IpHelper
                 $dec = bcadd($dec, $bin[$i]);
             }
             $long = $dec;
-        } else {
-            if (self::isValidV4($ip)) {
-                $long = ip2long($ip);
-            }
+        } elseif (self::isValidV4($ip)) {
+            $long = ip2long($ip);
         }
 
         return $long;

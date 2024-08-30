@@ -9,7 +9,7 @@ class CommonHelper
         echo $addPre ? '<pre>' : '';
         var_dump($data);
         echo $addPre ? '</pre>' : '';
-        die(1);
+        exit(1);
     }
 
     public static function formatNumber($number, $decimalSeparator = ',', $thousandsSeparator = '.')

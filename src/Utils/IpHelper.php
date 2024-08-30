@@ -7,7 +7,8 @@ use RuntimeException;
 
 /**
  * IP Address Helper
- * @note Refactor longman/ip-tools library @link https://github.com/akalongman/php-ip-tools
+ * @note Refactor longman/ip-tools library
+ * @link https://github.com/akalongman/php-ip-tools
  * @since 1.0.0
  */
 class IpHelper
@@ -228,9 +229,9 @@ class IpHelper
         return empty($ip) || in_array($ip, ['127.0.0.1', '::1']);
     }
 
-    public static function long2ip($dec, $ipv6 = false)
+    public static function long2ip($dec, $ipv6 = true)
     {
-        if ($ipv6) {
+        if ($dec > 0xFFFFFFFF && $ipv6) { // IPv6
             if (!function_exists('bcadd')) {
                 throw new RuntimeException('BCMATH extension not installed.');
             }

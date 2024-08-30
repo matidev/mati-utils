@@ -1,6 +1,6 @@
 # Mati Utils
 
-Common util functions that collected/refactored by me.
+Common util functions that collected/refactored by Tien Mai (Mati).
 
 ### Installation/Usage
 
